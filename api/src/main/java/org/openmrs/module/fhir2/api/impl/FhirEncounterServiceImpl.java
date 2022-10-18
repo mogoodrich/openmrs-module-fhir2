@@ -30,8 +30,10 @@ import org.openmrs.module.fhir2.FhirConstants;
 import org.openmrs.module.fhir2.api.FhirEncounterService;
 import org.openmrs.module.fhir2.api.FhirGlobalPropertyService;
 import org.openmrs.module.fhir2.api.FhirVisitService;
+import org.openmrs.module.fhir2.api.dao.FhirDispensingCustomDAO;
 import org.openmrs.module.fhir2.api.dao.FhirEncounterDao;
 import org.openmrs.module.fhir2.api.search.SearchQuery;
+import org.openmrs.module.fhir2.api.search.SearchQueryBundleProvider;
 import org.openmrs.module.fhir2.api.search.SearchQueryInclude;
 import org.openmrs.module.fhir2.api.search.TwoSearchQueryBundleProvider;
 import org.openmrs.module.fhir2.api.search.param.EncounterSearchParams;
@@ -50,6 +52,9 @@ public class FhirEncounterServiceImpl extends BaseFhirService<Encounter, org.ope
 	
 	@Autowired
 	private FhirEncounterDao dao;
+	
+	@Autowired
+	private FhirDispensingCustomDAO dispensingCustomDAO;
 	
 	@Autowired
 	private EncounterTranslator<org.openmrs.Encounter> translator;
@@ -212,6 +217,13 @@ public class FhirEncounterServiceImpl extends BaseFhirService<Encounter, org.ope
 		}
 		
 		return encounterBundle;
+	}
+	
+	@Override
+	@Transactional(readOnly = true)
+	public IBundleProvider getDispensingEncounters() {
+		return new SearchQueryBundleProvider<>(new SearchParameterMap(), dispensingCustomDAO, translator,
+		        globalPropertyService, searchQueryInclude);
 	}
 	
 	private void populateReverseIncludeForEverythingOperationParams(SearchParameterMap theParams) {

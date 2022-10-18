@@ -162,4 +162,9 @@ public class EncounterFhirResourceProvider implements IResourceProvider {
 		
 		return encounterService.getEncounterEverything(encounterReference);
 	}
+	
+	@Search(queryName = "dispensingQuery")
+	public IBundleProvider getDispensingEncounters() {
+		return encounterService.getDispensingEncounters();
+	}
 }

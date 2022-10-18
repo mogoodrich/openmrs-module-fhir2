@@ -19,4 +19,7 @@ public interface FhirEncounterService extends FhirService<Encounter> {
 	IBundleProvider searchForEncounters(EncounterSearchParams encounterSearchParams);
 	
 	IBundleProvider getEncounterEverything(TokenParam identifier);
+	
+	IBundleProvider getDispensingEncounters();
+	
 }
